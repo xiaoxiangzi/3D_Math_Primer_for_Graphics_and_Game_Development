@@ -1,0 +1,2 @@
+# 3DMathPrimerForGraphicsAndGameDevelopment
+practice code

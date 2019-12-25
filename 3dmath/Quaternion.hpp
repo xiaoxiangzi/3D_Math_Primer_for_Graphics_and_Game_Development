@@ -19,10 +19,9 @@ public:
     float w, x, y, z;
     
     void identity() {
-        w = x = y = z = 0.0f;
+        w = 1.0f;
+        x = y = z = 0.0f;
     }
-    
-    Quaternion() : w(0.0f), x(0.0f), y(0.0f), z(0.0f) {}
     
     // 构造执行旋转的四元数
     void setToRotateAboutX(float theta);

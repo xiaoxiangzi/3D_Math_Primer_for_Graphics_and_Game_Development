@@ -15,8 +15,8 @@
 const float kPi = 3.14159265f;
 const float k2Pi = kPi * 2.0f;
 const float KPiOver2 = kPi / 2.0f;
-const float k10OverPi = 1.0f / kPi;
-const float k10Over2Pi = 1.0f / k2Pi;
+const float k1OverPi = 1.0f / kPi;
+const float k1Over2Pi = 1.0f / k2Pi;
 
 // 通过增加适当的2pi倍数将角度限制在-pi到pi的区间内
 extern float wrapPi(float theta);

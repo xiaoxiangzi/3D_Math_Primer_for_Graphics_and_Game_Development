@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1D682A2E23A6597D009EAC2A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D682A2D23A6597D009EAC2A /* main.cpp */; };
 		1D682A3623A6605E009EAC2A /* MathUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D682A3523A6605E009EAC2A /* MathUtil.cpp */; };
+		1DB4F20823B396F2001ED435 /* EulerAngles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DB4F20623B396F2001ED435 /* EulerAngles.cpp */; };
+		1DB4F20B23B39B6F001ED435 /* Quaternion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DB4F20923B39B6F001ED435 /* Quaternion.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +31,10 @@
 		1D682A3423A65ECA009EAC2A /* MathUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MathUtil.h; sourceTree = "<group>"; };
 		1D682A3523A6605E009EAC2A /* MathUtil.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MathUtil.cpp; sourceTree = "<group>"; };
 		1D682A3823A66088009EAC2A /* Vector3.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Vector3.hpp; sourceTree = "<group>"; };
+		1DB4F20623B396F2001ED435 /* EulerAngles.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EulerAngles.cpp; sourceTree = "<group>"; };
+		1DB4F20723B396F2001ED435 /* EulerAngles.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EulerAngles.hpp; sourceTree = "<group>"; };
+		1DB4F20923B39B6F001ED435 /* Quaternion.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Quaternion.cpp; sourceTree = "<group>"; };
+		1DB4F20A23B39B6F001ED435 /* Quaternion.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Quaternion.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +69,10 @@
 			children = (
 				1D682A2D23A6597D009EAC2A /* main.cpp */,
 				1D682A3423A65ECA009EAC2A /* MathUtil.h */,
+				1DB4F20623B396F2001ED435 /* EulerAngles.cpp */,
+				1DB4F20923B39B6F001ED435 /* Quaternion.cpp */,
+				1DB4F20A23B39B6F001ED435 /* Quaternion.hpp */,
+				1DB4F20723B396F2001ED435 /* EulerAngles.hpp */,
 				1D682A3523A6605E009EAC2A /* MathUtil.cpp */,
 				1D682A3823A66088009EAC2A /* Vector3.hpp */,
 			);
@@ -127,7 +137,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D682A2E23A6597D009EAC2A /* main.cpp in Sources */,
+				1DB4F20B23B39B6F001ED435 /* Quaternion.cpp in Sources */,
 				1D682A3623A6605E009EAC2A /* MathUtil.cpp in Sources */,
+				1DB4F20823B396F2001ED435 /* EulerAngles.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

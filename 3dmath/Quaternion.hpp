@@ -43,8 +43,8 @@ public:
     void normalize();
     
     // 提取旋转角和旋转轴
-    float getRotationAngles();
-    Vector3 getRotationAxis();
+    float getRotationAngles() const;
+    Vector3 getRotationAxis() const;
 };
 
 // 全局单位四元数

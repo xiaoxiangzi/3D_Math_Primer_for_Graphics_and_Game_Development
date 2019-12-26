@@ -129,5 +129,85 @@ void Quaternion::normalize() {
     }
 }
 
+float Quaternion::getRotationAngles() const {
+    float thetaOver2 = safeAcos(w);
+    
+    return thetaOver2 * 2;
+}
+
+Vector3 Quaternion::getRotationAxis() const {
+    // 计算sin^2(theta / 2)，w = cos(theta / 2), sin^2(x) + cos^2(x) = 1
+    // x = axis.x * sin(theta / 2), y = axis.y * sin(theta / 2), z = axis.z * sin(theta / 2)
+    float sinThetaOver2Sq = 1.0 - w * w;
+    
+    // 保证数值精度
+    if (sinThetaOver2Sq <= 0.0f) {
+        // 单位四元数或不精确的数值，只需要fan'hu 有效的向量即可
+        return Vector3(1.0f, 0.0f, 0.0f);
+    }
+    
+    // 计算1/sin(theta / 2)
+    float oneOverSinThetaOver2 = 1.0 / sqrt(sinThetaOver2Sq);
+    
+    // 返回旋转轴
+    return Vector3(x * oneOverSinThetaOver2, y * oneOverSinThetaOver2, z * oneOverSinThetaOver2);
+}
+
+// 四元数点乘 10.4.10
+float dotProduct(const Quaternion& a, const Quaternion& b) {
+    return a.w * b.w + a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+// slerp，球面线性插值，10.4.13
+Quaternion slerp(const Quaternion& q0, const Quaternion& q1, float t) {
+    // 检查参数边界
+    if (t < 0.0f) {
+        return q0;
+    }
+    
+    if (t >= 1.0f) {
+        return q1;
+    }
+    
+    // 用点乘计算四元数夹角的cos值
+    float cosOmega = dotProduct(q0, q1);
+    
+    // 如果点乘为负，使用-q1
+    // 四元数q和-q代表相同的旋转，但可能产生不同的slerpc运算，我们要选择正确的一个以便用锐角进行旋转
+    float q1w = q1.w;
+    float q1x = q1.x;
+    float q1y = q1.y;
+    float q1z = q1.z;
+    
+    if (cosOmega < 0.0f) {
+        q1w = -q1w;
+        q1x = -q1x;
+        q1y = -q1y;
+        q1z = -q1z;
+        cosOmega = -cosOmega;
+    }
+    
+    // 我们用的是两个单位四元数，所以点乘结果应该<= 1.0f
+    assert(cosOmega < 1.0f);
+    
+    // 计算插值片，注意检查非常接近的情况
+    float k0, k1;
+    if (cosOmega > 0.9999f) {
+        // 非常接近，即线性插值，防止除零
+        k0 = 1.f - t;
+        k1 = t;
+    } else {
+        // TODO...
+    }
+    
+    // TODO
+    Quaternion result;
+    return result;
+}
+
+
+
+
+
 
 

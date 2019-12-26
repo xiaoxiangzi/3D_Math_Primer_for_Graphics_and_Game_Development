@@ -33,11 +33,11 @@ public:
     void setToRotateObjectToInertial(const EulerAngles& orientation);
     void setToRotateInertialToObject(const EulerAngles& orientation);
     
-    // 叉乘
+    // 叉乘（乘法）
     Quaternion operator* (const Quaternion& a) const;
     
     // 赋值乘法
-    Quaternion operator*= (const Quaternion& a) const;
+    Quaternion& operator*= (const Quaternion& a);
     
     // 将四元数正则化
     void normalize();

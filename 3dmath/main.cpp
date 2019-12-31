@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include "Vector3.hpp"
+#include "Quaternion.hpp"
 
 void chaper5() {
     // (3) - a
@@ -24,6 +25,14 @@ void chaper5() {
     crossProduct(a, b).print();
 }
 
+void chapter10_3() {
+    Quaternion a = {0.233, 0.060, -0.257, 0.935};
+    Quaternion b = {-0.752, 0.280, 0.374, 0.495};
+    a.print();
+    b.print();
+    cout << "dotProduct " << dotProduct(a, b) << endl;
+}
+
 int main(int argc, const char * argv[]) {
     // insert code here...
     std::cout << "Hello, World!\n";
@@ -32,5 +41,6 @@ int main(int argc, const char * argv[]) {
     n.print();
     
     chaper5();
+    chapter10_3();
     return 0;
 }

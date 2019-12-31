@@ -153,6 +153,12 @@ Vector3 Quaternion::getRotationAxis() const {
     return Vector3(x * oneOverSinThetaOver2, y * oneOverSinThetaOver2, z * oneOverSinThetaOver2);
 }
 
+void Quaternion::print() const {
+    stringstream ss;
+           ss << "q[" << w << ", " << x << ", " << y << ", " << z << "]" << endl;
+           cout << ss.str();
+}
+
 // 四元数点乘 10.4.10
 float dotProduct(const Quaternion& a, const Quaternion& b) {
     return a.w * b.w + a.x * b.x + a.y * b.y + a.z * b.z;
@@ -193,15 +199,85 @@ Quaternion slerp(const Quaternion& q0, const Quaternion& q1, float t) {
     // 计算插值片，注意检查非常接近的情况
     float k0, k1;
     if (cosOmega > 0.9999f) {
-        // 非常接近，即线性插值，防止除零
+        // 非常接近零度，即线性插值，防止除零
         k0 = 1.f - t;
         k1 = t;
     } else {
-        // TODO...
+        // 用三角公式sin^2(omega) + cos^2(omega) = 1计算sin值
+        float sinOmega = sqrt(1 - cosOmega * cosOmega);
+        // 根据sin和cos值计算角度
+        float omega = atan2(sinOmega, cosOmega);
+        // 计算分母的倒数，这样只需要除一次
+        float oneOverSinOmega = 1.0f / sinOmega;
+        // 计算差值变量
+        k0 = sin((1.0f - t) * omega) * oneOverSinOmega;
+        k1 = sin(t * omega) * oneOverSinOmega;
     }
     
-    // TODO
     Quaternion result;
+    result.x = k0 * q0.x + k1*q1.x;
+    result.y = k0 * q0.y + k1*q1.y;
+    result.z = k0 * q0.z + k1*q1.z;
+    result.w = k0 * q0.w + k1*q1.w;
+    return result;
+}
+
+// conjugate，四元数共轭，与原四元数旋转方向相反的四元数，10.4.7节
+Quaternion conjugate(const Quaternion& q) {
+    Quaternion result;
+    // 旋转量相同
+    result.w = q.w;
+    // 旋转轴相反
+    result.x = -q.x;
+    result.y = -q.y;
+    result.z = -q.z;
+    
+    return result;
+}
+
+// inverse，四元数逆，10.4.7
+Quaternion inverse(const Quaternion& q) {
+    float mag = (float)sqrt(q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z);
+    Quaternion result = conjugate(q);
+    if (mag > 0.0f) {
+        float oneOverMag = 1.0f / mag;
+        result.w *= oneOverMag;
+        result.x *= oneOverMag;
+        result.y *= oneOverMag;
+        result.z *= oneOverMag;
+    } else {
+        assert(false);
+        // 在发布版中，返回单位四元数
+        result.identity();
+    }
+    return result;
+}
+
+Quaternion diff(const Quaternion& a, const Quaternion& b) {
+    Quaternion result = inverse(a) * b;
+    return result;
+}
+
+// pow，四元数幂，10.4.12节
+Quaternion pow(const Quaternion& q, float exponent) {
+    // 检查单位四元数，防止除零
+    if (fabs(q.w) > .9999f) {
+        return q;
+    }
+    
+    // 提取半角alpha(alpha - theta / 2)
+    float alpha = acos(q.w);
+    // 计算新alpha值
+    float newAlpha = alpha * exponent;
+    // 计算新w值
+    Quaternion result;
+    float mult = sin(newAlpha) / sin(alpha);
+    
+    result.w = cos(newAlpha);
+    result.x = q.x * mult;
+    result.y = q.y * mult;
+    result.z = q.z * mult;
+    
     return result;
 }
 

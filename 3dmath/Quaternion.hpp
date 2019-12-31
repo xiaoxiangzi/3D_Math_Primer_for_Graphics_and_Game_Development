@@ -45,6 +45,8 @@ public:
     // 提取旋转角和旋转轴
     float getRotationAngles() const;
     Vector3 getRotationAxis() const;
+    
+    void print() const;
 };
 
 // 全局单位四元数
@@ -59,7 +61,13 @@ extern Quaternion slerp(const Quaternion& p, const Quaternion& q, float t);
 // 四元数共轭
 extern Quaternion conjugate(const Quaternion& q);
 
+// 四元数逆
+extern Quaternion inverse(const Quaternion& q);
+
+// 四元数差，两个四元数角位移a-1b
+extern Quaternion diff(const Quaternion& a, const Quaternion& b);
+
 // 四元数幂
-extern Quaternion pow(const Quaternion& q);
+extern Quaternion pow(const Quaternion& q, float exponent);
 
 #endif /* Quaternion_hpp */

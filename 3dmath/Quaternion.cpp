@@ -265,7 +265,7 @@ Quaternion pow(const Quaternion& q, float exponent) {
         return q;
     }
     
-    // 提取半角alpha(alpha - theta / 2)
+    // 提取半角alpha(alpha = theta / 2)
     float alpha = acos(q.w);
     // 计算新alpha值
     float newAlpha = alpha * exponent;

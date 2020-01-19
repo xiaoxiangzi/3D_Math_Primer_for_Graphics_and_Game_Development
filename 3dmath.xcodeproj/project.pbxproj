@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A9C00D223BB2C74009CD3C7 /* RotationMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A9C00D023BB2C74009CD3C7 /* RotationMatrix.cpp */; };
+		1AAF754223D4532800C316C8 /* Matrix4x3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF754023D4532800C316C8 /* Matrix4x3.cpp */; };
 		1D682A2E23A6597D009EAC2A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D682A2D23A6597D009EAC2A /* main.cpp */; };
 		1D682A3623A6605E009EAC2A /* MathUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D682A3523A6605E009EAC2A /* MathUtil.cpp */; };
 		1DB4F20823B396F2001ED435 /* EulerAngles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DB4F20623B396F2001ED435 /* EulerAngles.cpp */; };
@@ -29,6 +30,8 @@
 /* Begin PBXFileReference section */
 		1A9C00D023BB2C74009CD3C7 /* RotationMatrix.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RotationMatrix.cpp; sourceTree = "<group>"; };
 		1A9C00D123BB2C74009CD3C7 /* RotationMatrix.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RotationMatrix.hpp; sourceTree = "<group>"; };
+		1AAF754023D4532800C316C8 /* Matrix4x3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Matrix4x3.cpp; sourceTree = "<group>"; };
+		1AAF754123D4532800C316C8 /* Matrix4x3.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Matrix4x3.hpp; sourceTree = "<group>"; };
 		1D682A2A23A6597D009EAC2A /* 3dmath */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = 3dmath; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D682A2D23A6597D009EAC2A /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		1D682A3423A65ECA009EAC2A /* MathUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MathUtil.h; sourceTree = "<group>"; };
@@ -75,6 +78,8 @@
 				1DB4F20623B396F2001ED435 /* EulerAngles.cpp */,
 				1DB4F20923B39B6F001ED435 /* Quaternion.cpp */,
 				1A9C00D023BB2C74009CD3C7 /* RotationMatrix.cpp */,
+				1AAF754023D4532800C316C8 /* Matrix4x3.cpp */,
+				1AAF754123D4532800C316C8 /* Matrix4x3.hpp */,
 				1A9C00D123BB2C74009CD3C7 /* RotationMatrix.hpp */,
 				1DB4F20A23B39B6F001ED435 /* Quaternion.hpp */,
 				1DB4F20723B396F2001ED435 /* EulerAngles.hpp */,
@@ -143,6 +148,7 @@
 			files = (
 				1D682A2E23A6597D009EAC2A /* main.cpp in Sources */,
 				1A9C00D223BB2C74009CD3C7 /* RotationMatrix.cpp in Sources */,
+				1AAF754223D4532800C316C8 /* Matrix4x3.cpp in Sources */,
 				1DB4F20B23B39B6F001ED435 /* Quaternion.cpp in Sources */,
 				1D682A3623A6605E009EAC2A /* MathUtil.cpp in Sources */,
 				1DB4F20823B396F2001ED435 /* EulerAngles.cpp in Sources */,

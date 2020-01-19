@@ -50,7 +50,7 @@ public:
     void fromQuaternion(const Quaternion& q);
     
     // 构造沿坐标轴缩放的矩阵
-    void setScale(const Vector3& s);
+    void setupScale(const Vector3& s);
     
     // 构造沿任意轴缩放的矩阵
     void setupScaleAlongAxis(const Vector3& axis, float k);

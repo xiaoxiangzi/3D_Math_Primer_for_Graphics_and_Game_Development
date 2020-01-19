@@ -176,4 +176,40 @@ void Matrix4x3::setupRotate(const Vector3 &axis, float theta) {
     参看10.6.3
 
  */
+void Matrix4x3::fromQuaternion(const Quaternion &q) {
+    float ww = 2.0f * q.w;
+    float xx = 2.0f * q.x;
+    float yy = 2.0f * q.y;
+    float zz = 2.0f * q.z;
+    
+    // 矩阵元素分赋值
+    m11 = 1.0f - yy * q.y - zz * q.z;
+    m12 = xx * q.y + ww * q.z;
+    m13 = xx * q.z - ww * q.z;
+    
+    m21 = xx * q.y - ww * q.z;
+    m22 = 1.0f - xx * q.x - zz * q.z;
+    m23 = yy * q.z + ww * q.x;
+    
+    m31 = xx * q.z + ww * q.y;
+    m32 = yy * q.z - ww * q.x;
+    m33 = 1.0f - xx * q.x - yy * q.y;
+    
+    // 平移部分置零
+    tx = ty = tz = 0.0f;
+}
 
+/*
+    构造沿各坐标轴缩放的矩阵
+    对于缩放因子k，使用向量Vector3(k,k,k)表示
+    平移部分置零
+    参看8.3.1
+ */
+void Matrix4x3::setupScale(const Vector3 &s) {
+    // 矩阵元素赋值
+    m11 = s.x; m12 = 0.0f; m13 = 0.0f;
+    m21 = 0.0f; m22 = s.y; m23 = 0.0f;
+    m31 = 0.0f; m32 = 0.0f; m33 = s.z;
+    
+    tx = ty = tz = 0.0f;
+}

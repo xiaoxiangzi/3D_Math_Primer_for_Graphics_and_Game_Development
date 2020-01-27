@@ -419,7 +419,6 @@ Matrix4x3 operator*=(const Matrix4x3& a, const Matrix4x3& b) {
     r.tx = a.tx * b.m13 + a.ty * b.m23 + a.tz * b.m33 + b.tz;
     
     // 这种方法需要调用拷贝构造函数，如果速度非常重要，可能要用单独的函数在期望的地方给出返回值
-    
     return r;
 }
 
@@ -437,4 +436,67 @@ float determinant(const Matrix4x3& m) {
         m.m11 * (m.m22 * m.m33 - m.m23 * m.m32)
         + m.m12 * (m.m23 * m.m31 - m.m21 * m.m33)
         + m.m13 * (m.m21 * m.m32 - m.m22 * m.m31);
+}
+
+/*
+    求矩阵的逆，使用经典的伴随矩阵除以行列式的方法
+    参看9.2.1
+ */
+Matrix4x3 inverse(const Matrix4x3& m) {
+    // 计算行列式
+    float det = determiant(m);
+    
+    // 如果是奇异的，即行列式为0，没有逆矩阵
+    assert(fabs(det) > .000001f);
+    
+    // 计算1/行列式
+    float oneOverDet = 1.0f / det;
+    
+    Matrix4x3 r;
+    
+    // 计算3x3部分的逆
+    r.m11 = (m.m22 * m.m33 - m.m23 * m.m32) * oneOverDet;
+    r.m12 = (m.m13 * m.m32 - m.m12 * m.m33) * oneOverDet;
+    r.m13 = (m.m12 * m.m23 - m.m13 * m.m22) * oneOverDet;
+    
+    r.m21 = (m.m23 * m.m31 - m.m21 * m.m33) * oneOverDet;
+    r.m22 = (m.m11 * m.m31 - m.m13 * m.m31) * oneOverDet;
+    r.m23 = (m.m13 * m.m21 - m.m11 * m.m23) * oneOverDet;
+    
+    r.m31 = (m.m21 * m.m32 - m.m22 * m.m31) * oneOverDet;
+    r.m32 = (m.m12 * m.m31 - m.m11 * m.m32) * oneOverDet;
+    r.m33 = (m.m11 * m.m22 - m.m12 * m.m21) * oneOverDet;
+    
+    // 计算平移部分的逆
+    r.tx = -(m.tx * r.m11 + m.ty * r.m21 + m.tz * r.m31);
+    r.ty = -(m.tx * r.m12 + m.ty * r.m22 + m.tz * r.m32);
+    r.tz = -(m.tx * r.m13 + m.ty * r.m23 + m.tz * r.m33);
+    
+    // 这种方法需要调用拷贝构造函数，如果速度非常重要，可能要用单独的函数在期望的地方给出返回值
+    return r;
+}
+
+// 以向量的形式返回平移部分
+Vector3 getTranslation(const Matrix4x3& m) {
+    return Vector3(m.tx, m.ty, m.tz);
+}
+
+/*
+    从父->局部（如世界->物体）变换矩阵中提取物体的位置
+    假设矩阵代表刚体变换
+ */
+Vector3 getPositionFromParentToLocal(const Matrix4x3& m) {
+    // 负的平移值乘以3*3部分的转置
+    // 假设矩阵是正交的（该方法不能应用于非刚体变换）
+    return Vector3(-(m.tx * m.m11 + m.ty * m.m12 + m.tz * m.m13),
+                   -(m.tx * m.m21 + m.ty * m.m22 + m.tz * m.m23),
+                   -(m.tx * m.m31 + m.ty * m.m32 + m.tz * m.m33));
+}
+
+/*
+    从局部->父（如物体->世界）变换矩阵中提取物体的位置
+ */
+Vector3 getPositionFromLocalToParent(const Matrix4x3& m) {
+    // 所需的e位置就是平移部分
+    return Vector3(m.tx, m.ty, m.tz);
 }

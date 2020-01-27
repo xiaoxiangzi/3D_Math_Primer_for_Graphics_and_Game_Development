@@ -211,5 +211,230 @@ void Matrix4x3::setupScale(const Vector3 &s) {
     m21 = 0.0f; m22 = s.y; m23 = 0.0f;
     m31 = 0.0f; m32 = 0.0f; m33 = s.z;
     
+    // 平移部分置零
     tx = ty = tz = 0.0f;
+}
+
+/*
+    构造任意轴缩放矩阵
+    旋转轴为单位向量
+    平移部分置零
+    参看8.3.2
+ */
+void Matrix4x3::setupScaleAlongAxis(const Vector3 &axis, float k) {
+    // 检查旋转轴是否为单位向量
+    assert(fabs(axis * axis - 1.0f) < .01f);
+    
+    // 计算k-1和常用的字表达式
+    float a = k -1.0f;
+    float ax = a * axis.x;
+    float ay = a * axis.y;
+    float az = a * axis.z;
+    
+    // 矩阵元素赋值，这里我们完成自己的操作，因为其对角元素相等
+    m11 = ax * axis.x + 1.0f;
+    m22 = ay * axis.y + 1.0f;
+    m33 = az * axis.z + 1.0f;
+    
+    m12 = m21 = ax * axis.y;
+    m13 = m31 = ax * axis.z;
+    m23 = m32 = ay * axis.z;
+    
+    // 平移部分置零
+    tx = ty = tz = 0.0f;
+}
+
+/*
+    构造切变矩阵
+    切变类型由一个索引制定，变换效果如以下伪代码所示
+    axis == 1 => y += s*x, z += t*x
+    axis == 2 => x += s*y, z += t*y
+    axis == 3 => x += s*y, y += t*z
+ */
+void Matrix4x3::setupShear(int axis, float s, float t) {
+    // 判断切变类型
+    switch (axis) {
+        case 1:
+            // 用x切变y和z
+            m11 = 1.0f; m12 = s; m13 = t;
+            m21 = 0.0f; m22 = 1.0f; m23 = 0.0f;
+            m31 = 0.0f; m32 = 0.0f; m33 = 1.0f;
+            break;
+        case 2:
+            // 用y切变x和z
+            m11 = 1.0f; m12 = 0.0f; m13 = 0.0f;
+            m21 = s; m22 = 1.0f; m23 = t;
+            m31 = 0.0f; m32 = 0.0f; m33 = 1.0f;
+        case 3:
+            // 用z切变x和y
+            m11 = 1.0f; m12 = 0.0f; m13 = 0.0f;
+            m21 = 0.0f; m22 = 1.0f; m23 = 0.0f;
+            m31 = s; m32 = t; m33 = 1.0f;
+        default:
+            // 非法索引
+            assert(false);
+            break;
+    }
+    
+    // 平移部分置零
+    tx = ty = tz = 0.0f;
+}
+
+/*
+ 
+    构造投影矩阵，投影平面过原点，且垂直于单位向量
+    参看8.4.2
+ 
+ */
+void Matrix4x3::setupProject(const Vector3 &n) {
+    // 检查旋转轴是否为单位向量
+    assert(fabs(n * n - 1.0f) < .01f);
+    
+    m11 = 1.0f - n.x * n.x;
+    m22 = 1.0f - n.y * n.y;
+    m33 = 1.0f - n.z * n.z;
+    
+    m12 = m21 = -n.x * n.y;
+    m13 = m31 = -n.x * n.z;
+    m23 = m32 = -n.y * n.z;
+    
+    // 平移部分置零
+    tx = ty = tz = 0.0f;
+}
+
+/*
+    构造反射矩阵，发射平面平行于坐标平面
+    反射平面由一个索引指定
+    1 => 沿着x=k平面反射
+    2 => 沿着y=k平面反射
+    3 => 沿着z=k平面反射
+    平移部分置为合适的值，因为k!=0时，平移是一定会发生的
+    参看8.5
+ */
+void Matrix4x3::setupReflect(int axis, float k /*= 0.0f*/) {
+    // 判断反射平面
+    switch(axis) {
+        case 1:
+            // 沿着x=k平面反射
+            m11 = -1.0f; m12 = 0.0f; m13 = 0.0f;
+            m21 = 0.0f; m22 = 1.0f; m23 = 0.0f;
+            m31 = 0.0f; m32 = 0.0f; m33 = 1.0f;
+            
+            tx = 2.0f * k;
+            ty = 0.0f;
+            tz = 0.0f;
+            break;
+        case 2:
+            // 沿着y=k平面反射
+            m11 = 1.0f; m12 = 0.0f; m13 = 0.0f;
+            m21 = 0.0f; m22 = -1.0f; m23 = 0.0f;
+            m31 = 0.0f; m32 = 0.0f; m33 = 1.0f;
+            
+            tx = 0.0f;
+            ty = 2.0f * k;
+            tz = 0.0f;
+            break;
+        case 3:
+            // 沿着z=k平面反射
+            m11 = 1.0f; m12 = 0.0f; m13 = 0.0f;
+            m21 = 0.0f; m22 = 1.0f; m23 = 0.0f;
+            m31 = 0.0f; m32 = 0.0f; m33 = -1.0f;
+            
+            tx = 0.0f;
+            ty = 0.0f;
+            tz = 2.0f * k;
+            break;
+        default:
+            // 非法索引
+            assert(false);
+            break;
+    }
+}
+
+/*
+    构造沿任意轴反射矩阵，反射平面为过原点的任意平面，且垂直于单位向量n
+    平移部分置零
+ 
+    参看8.5
+ */
+void Matrix4x3::setupReflect(const Vector3 &n) {
+    // 检查旋转轴是否为单位向量
+    assert(fabs(n * n - 1.0f) < .01f);
+    
+    // 计算公共子表达式
+    float ax = -2.0f * n.x;
+    float ay = -2.0f * n.y;
+    float az = -2.0f * n.z;
+    
+    // 矩阵元素赋值，这里我们自己完成优化操作，因为其对角元素相等
+    m11 = 1.0f + ax * n.x;
+    m22 = 1.0f + ay * n.y;
+    m33 = 1.0f + az * n.z;
+    
+    m12 = m21 = ax * n.y;
+    m13 = m31 = ax * n.z;
+    m23 = m32 = ay * n.z;
+}
+
+/*
+    变换该点，
+    使得使用向量类就像在纸上作线性代数一样直观
+    参看7.1.7
+ */
+Vector3 operator* (const Vector3& p, const Matrix4x3& m) {
+    return Vector3(
+        p.x * m.m11 + p.y * m.m21 + p.z * m.m31 + m.tx,
+        p.x * m.m12 + p.y * m.m22 + p.z * m.m32 + m.ty,
+        p.x * m.m13 + p.y * m.m23 + p.z * m.m33 + m.tz);
+}
+
+Vector3& operator*= (Vector3& p, const Matrix4x3& m) {
+    p = p * m;
+    return p;
+}
+
+/*
+    矩阵连接，使得使用矩阵类就像在纸上做线性代数一样直观
+    提供*=运算符，以符合c语言的语法习惯
+    参看7.1.6
+ */
+Matrix4x3 operator*=(const Matrix4x3& a, const Matrix4x3& b) {
+    Matrix4x3 r;
+    
+    // 计算左上的线形变换部分
+    r.m11 = a.m11 * b.m11 + a.m12 * b.m21 + a.m13 * b.m31;
+    r.m12 = a.m11 * b.m12 + a.m12 * b.m22 + a.m13 * b.m32;
+    r.m13 = a.m11 * b.m13 + a.m12 * b.m23 + a.m13 * b.m33;
+    
+    r.m21 = a.m21 * b.m11 + a.m22 * b.m21 + a.m23 * b.m31;
+    r.m22 = a.m21 * b.m22 + a.m22 * b.m22 + a.m23 * b.m32;
+    r.m23 = a.m21 * b.m23 + a.m22 * b.m23 + a.m23 * b.m33;
+    
+    r.m31 = a.m31 * b.m11 + a.m32 * b.m21 + a.m33 * b.m31;
+    r.m32 = a.m31 * b.m12 + a.m32 * b.m22 + a.m33 * b.m32;
+    r.m33 = a.m31 * b.m13 + a.m32 * b.m23 + a.m33 * b.m33;
+    
+    r.tx = a.tx * b.m11 + a.ty * b.m21 + a.tz * b.m31 + b.tx;
+    r.ty = a.tx * b.m12 + a.ty * b.m22 + a.tz * b.m32 + b.ty;
+    r.tx = a.tx * b.m13 + a.ty * b.m23 + a.tz * b.m33 + b.tz;
+    
+    // 这种方法需要调用拷贝构造函数，如果速度非常重要，可能要用单独的函数在期望的地方给出返回值
+    
+    return r;
+}
+
+Matrix4x3& operator*=(Matrix4x3& a, const Matrix4x3& b) {
+    a = a * b;
+    return a;
+}
+
+/*
+    计算矩阵左上3x3部分的行列式
+    参看9.1.1
+ */
+float determinant(const Matrix4x3& m) {
+    return
+        m.m11 * (m.m22 * m.m33 - m.m23 * m.m32)
+        + m.m12 * (m.m23 * m.m31 - m.m21 * m.m33)
+        + m.m13 * (m.m21 * m.m32 - m.m22 * m.m31);
 }

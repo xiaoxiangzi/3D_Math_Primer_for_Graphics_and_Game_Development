@@ -75,7 +75,7 @@ Vector3& operator*=(Vector3& p, const Matrix4x3& m);
 Matrix4x3 operator*=(const Matrix4x3& a, const Matrix4x3& b);
 
 // 计算3x3部分的行列式值
-float determiant(const Matrix4x3& m);
+float determinant(const Matrix4x3& m);
 
 // 计算矩阵的逆
 Matrix4x3 inverse(const Matrix4x3& m);

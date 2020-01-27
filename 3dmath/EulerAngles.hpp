@@ -43,11 +43,11 @@ public:
     // 从物体到惯性
     void fromObjectToInertialQuaternion(const Quaternion& q);
     // 从惯性到物体
-    void fromInertialQuaternion(const Quaternion& q);
+    void fromInertialToObjectQuaternion(const Quaternion& q);
     
     // 从矩阵转换到欧拉角，平移部分省略，假设矩阵是正交
-    void fromObjectToInertialMatrix(const Matrix4x3& m);
-    void fromInertialToObjectMatrix(const Matrix4x3& m);
+    void fromObjectToWorldMatrix(const Matrix4x3& m);
+    void fromWorldToObjectMatrix(const Matrix4x3& m);
     
     // 从旋转矩阵转换到欧拉角
     void fromRotationMatrix(const RotationMatrix& m);

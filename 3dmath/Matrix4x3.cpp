@@ -398,7 +398,7 @@ Vector3& operator*= (Vector3& p, const Matrix4x3& m) {
     提供*=运算符，以符合c语言的语法习惯
     参看7.1.6
  */
-Matrix4x3 operator*=(const Matrix4x3& a, const Matrix4x3& b) {
+Matrix4x3 operator*(const Matrix4x3& a, const Matrix4x3& b) {
     Matrix4x3 r;
     
     // 计算左上的线形变换部分
@@ -444,7 +444,7 @@ float determinant(const Matrix4x3& m) {
  */
 Matrix4x3 inverse(const Matrix4x3& m) {
     // 计算行列式
-    float det = determiant(m);
+    float det = determinant(m);
     
     // 如果是奇异的，即行列式为0，没有逆矩阵
     assert(fabs(det) > .000001f);
